@@ -53,7 +53,9 @@ footer a{
 footer li{
     list-style: none;
 }
-
+.inner-content{
+    text-align: center;
+}
 .one-column{
     display:flex;
     flex-direction: column;
@@ -61,6 +63,7 @@ footer li{
     width: 100%;
     padding-top: 30px;
     padding-bottom: 50px;
+    text-align: center;
 }
 
 .header{
@@ -91,6 +94,10 @@ footer li{
     justify-content: space-around;
 }
 
+.inner-container p{
+    text-align: center;
+}
+
 .inner-container img{
     width:175px;
 }
@@ -115,20 +122,18 @@ footer li{
     }
     button{
         font-size: 16px;
-        width: 100px;
-    }
-    .inner-content{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+        width: 50vw;
     }
     .banner img{
         width: 50vw;
         height: fit-content;
     }
-    .one-column{
-        width:80vw;
+    .inner-container{
+        justify-content: center;
+    }
+
+    .inner-container img{
+        width: 75px;
     }
 }
 
