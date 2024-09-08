@@ -1,2 +1,1 @@
-Clique aqui para acessar a atividade!
-https://github.com/lucasgrohegomes/expo_ramon
+Segue aqui a atividade de cardinalidade e sua resolução via Lucidchart.
