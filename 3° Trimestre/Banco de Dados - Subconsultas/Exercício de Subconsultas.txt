@@ -1,0 +1,124 @@
+-- 1. Nome dos Vendedores em Ordem Alfabética.
+SELECT nome FROM VENDEDOR 
+ORDER BY nome ASC;
+
+-- 2. Os produtos que o preço seja maior que R$200,00, em ordem crescente pelo preço.
+SELECT * FROM municipio
+WHERE valor > 200
+ORDER BY valor ASC;
+
+-- 3. O nome do produto, o preço e o preço reajustado em 10%, ordenado pelo nome do produto.
+SELECT nome, valor, (valor * 1.10) AS valor_ajustado FROM PRODUTO
+ORDER BY nome ASC;
+
+-- 4. Os municípios do Rio Grande do Sul.
+SELECT * FROM MUNICIPIO
+WHERE iduf = 5;
+
+-- 5. Os pedidos feitos entre 10/04/2008 e 25/04/2008 ordenado pelo valor.
+SELECT * FROM PEDIDO WHERE data_pedido BETWEEN '2008-04-10' AND '2008-04-25'
+ORDER BY valor ASC;
+
+-- 6. Os pedidos que o valor esteja entre R$1.000,00 e R$1.500,00.
+SELECT * FROM PEDIDO WHERE valor BETWEEN 1000 AND 1500;
+
+-- 7. Os pedidos que o valor não esteja entre R$100,00 e R$500,00.
+SELECT * FROM PEDIDO WHERE valor NOT BETWEEN 100 AND 500;
+
+-- 8. Os pedidos do vendedor André ordenado pelo valor em orden decrescente.
+SELECT * FROM PEDIDO 
+WHERE idvendedor = 1
+ORDER BY valor DESC;
+
+-- 9. Os pedidos do cliente Manoel ordenado pelo valor em ordem crescente.
+SELECT * FROM PEDIDO 
+WHERE idcliente = 1
+ORDER BY valor ASC;
+
+-- 10. Os pedidos da cliente Jéssica que foram feitos pelo vendedor André.
+SELECT * FROM PEDIDO
+WHERE idvendedor = 1
+AND idcliente = 15;
+
+-- 11. Os pedidos que foram transportados pela transportadora União Transportes.
+SELECT * FROM PEDIDO
+WHERE idtransportadora = 2;
+
+-- 12. Os pedidos feitos pela vendedora Maria ou pela vendedora Aline.
+SELECT * FROM PEDIDO
+WHERE idvendedor = 5 OR idvendedor = 7;
+
+-- 13. Os clientes que moram em Unillo da Vitória ou Porto União.
+SELECT * FROM CLIENTE
+WHERE idmunicipio = 1 or idmunicipio = 9;
+
+-- 14. Os clientes que não moram em União da Vitória e nem em Porto União.
+SELECT * FROM CLIENTE
+WHERE NOT idmunicipio = 1 and NOT idmunicipio = 9;
+
+-- 15. Os clientes que não informaram o logradouro.
+SELECT * FROM CLIENTE
+WHERE logradouro IS NULL OR logradouro = ''
+
+-- 16. Os clientes que moram em avenidas.
+SELECT * FROM CLIENTE
+WHERE SUBSTRING(logradouro FROM 1 FOR 3) = 'Av.'
+
+-- 17. Os vendedores que o nome começa com a letra S
+SELECT * FROM VENDEDOR
+WHERE nome LIKE 'S%'
+
+-- 18. Os vendedores que o nome termina com a letra A.
+SELECT * FROM VENDEDOR
+WHERE nome LIKE '%a'
+
+-- 19. Os vendedores que o nome não começa com a letra A.
+SELECT * FROM VENDEDOR
+WHERE NOT nome LIKE 'A%'
+
+-- 20. Os municipios que começam com a letra P e são de Santa Catarina.
+SELECT * FROM MUNICIPIO
+WHERE iduf = 1 and nome LIKE 'P%'
+
+-- 21. Os fornecedores que informaram o endereço.
+SELECT * FROM CLIENTE
+WHERE NOT logradouro IS NULL and logradouro != ''
+
+-- 22. Os itens do pedido 01.
+SELECT * FROM PEDIDO_PRODUTO
+WHERE idpedido = 1
+
+-- 23. Os itens do pedido 06 ou do pedido 10.
+SELECT * FROM PEDIDO_PRODUTO
+WHERE idpedido = 6 or idpedido = 10
+
+---------------------------------------------- SUBCONSULTAS
+-- 1. O nome dos clientes que moram na mesma cidade do Manoel. Não deve ser mostrado o Manoel.
+SELECT nome FROM CLIENTE
+WHERE idmunicipio = (SELECT idmunicipio FROM CLIENTE WHERE nome = 'Manoel')
+and nome NOT LIKE 'Manoel';
+
+-- 2. A data e o valor dos pedidos que o valor do pedido seja menor que a média de todos os pedidos.
+SELECT data_pedido, valor FROM PEDIDO
+WHERE valor < (SELECT AVG(valor) FROM PEDIDO);
+
+-- 3. A data, o valor, o cliente e o vendedor dos pedidos que possuem 2 ou mais produtos.
+SELECT data_pedido, valor, idcliente, idvendedor FROM PEDIDO
+WHERE idpedido IN (SELECT DISTINCT idpedido FROM PEDIDO_PRODUTO
+WHERE quantidade >= 2) 
+
+SELECT * FROM CLIENTE
+-- 4. O nome dos clientes que moram na mesma cidade da transportadora BSTransportes.
+SELECT nome FROM CLIENTE
+WHERE idmunicipio IN (SELECT idmunicipio FROM TRANSPORTADORA
+WHERE nome = 'BS. Transportes')
+
+-- 5. O nome do cliente e o municipio dos clientes que estão localizados no mesmo município de qualquer uma das transportadoras.
+SELECT nome, idmunicipio FROM CLIENTE
+WHERE idmunicipio IN (SELECT idmunicipio FROM TRANSPORTADORA
+WHERE idmunicipio IS NOT NULL)
+
+-- 6. Atualizar o valor do pedido em 5% para os pedidos que o somatório do valor total dos produtos daquele pedido seja maior que a média do valor total.
+UPDATE PEDIDO
+SET valor = valor +(valor * 0.05)
+WHERE valor > (SELECT AVG(valor) FROM PEDIDO);

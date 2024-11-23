@@ -1,0 +1,1 @@
+Segue aqui uma lista de exercícios sobre vetores, feito para revisar comandos de edição de arrays e lógica de programação para a prova do SAEP.
